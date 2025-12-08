@@ -53,5 +53,41 @@
     <disable_collisions link1="${prefix}wrist_1_link" link2="${prefix}wrist_3_link" reason="Never" />
     <disable_collisions link1="${prefix}wrist_2_link" link2="${prefix}wrist_3_link" reason="Adjacent" />
 
+    <disable_collisions link1="${prefix}base_link" link2="${prefix}base_link_inertia" reason="Adjacent" />
+    <disable_collisions link1="${prefix}base_link_inertia" link2="${prefix}shoulder_link" reason="Adjacent" />
+    <disable_collisions link1="${prefix}tool0" link2="${prefix}wrist_1_link" reason="Never" />
+    <disable_collisions link1="${prefix}tool0" link2="${prefix}wrist_2_link" reason="Never" />
+    <disable_collisions link1="${prefix}tool0" link2="${prefix}wrist_3_link" reason="Adjacent" />
+    <disable_collisions link1="${prefix}forearm_link" link2="${prefix}upper_arm_link" reason="Adjacent" />
+    <disable_collisions link1="${prefix}forearm_link" link2="${prefix}wrist_1_link" reason="Adjacent" />
+    <disable_collisions link1="${prefix}shoulder_link" link2="${prefix}upper_arm_link" reason="Adjacent" />
+    <disable_collisions link1="${prefix}wrist_1_link" link2="${prefix}wrist_2_link" reason="Adjacent" />
+    <disable_collisions link1="${prefix}wrist_1_link" link2="${prefix}wrist_3_link" reason="Never" />
+    <disable_collisions link1="${prefix}wrist_2_link" link2="${prefix}wrist_3_link" reason="Adjacent" />
+
+    <!--GRIPPER-->
+    <disable_collisions link1="right_outer_knuckle" link2="right_outer_finger" reason="Adjacent"/>
+    <disable_collisions link1="left_outer_knuckle"  link2="left_outer_finger"  reason="Adjacent"/>
+    <disable_collisions link1="right_inner_knuckle" link2="right_inner_finger" reason="Adjacent"/>
+    <disable_collisions link1="left_inner_knuckle"  link2="left_inner_finger"  reason="Adjacent"/>
+    <disable_collisions link1="right_outer_finger" link2="right_inner_finger" reason="Adjacent"/>
+    <disable_collisions link1="left_outer_finger"  link2="left_inner_finger"  reason="Adjacent"/>
+
+    <disable_collisions link1="flange" link2="adapter_plate" reason="Adjacent"/>
+    <disable_collisions link1="tool0"  link2="adapter_plate" reason="Adjacent"/>
+    <disable_collisions link1="wrist_3_link" link2="adapter_plate" reason="Adjacent"/>
+
+    <disable_collisions link1="robotiq_85_base_link" link2="left_outer_knuckle"  reason="Adjacent"/>
+    <disable_collisions link1="robotiq_85_base_link" link2="right_outer_knuckle" reason="Adjacent"/>
+    <disable_collisions link1="robotiq_85_base_link" link2="left_inner_knuckle"  reason="Adjacent"/>
+    <disable_collisions link1="robotiq_85_base_link" link2="right_inner_knuckle" reason="Adjacent"/>
+
+    <disable_collisions link1="robotiq_85_base_link" link2="left_outer_finger"   reason="Adjacent"/>
+    <disable_collisions link1="robotiq_85_base_link" link2="right_outer_finger"  reason="Adjacent"/>
+    <disable_collisions link1="robotiq_85_base_link" link2="left_inner_finger"   reason="Adjacent"/>
+    <disable_collisions link1="robotiq_85_base_link" link2="right_inner_finger"  reason="Adjacent"/>
+
+    <disable_collisions link1="adapter_plate" link2="robotiq_85_base_link" reason="Adjacent"/>
+
   </xacro:macro>
 </robot>

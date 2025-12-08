@@ -149,7 +149,7 @@ ament_export_libraries(
   ur_robot_driver_plugin
 )
 
-install(DIRECTORY resources
+install(DIRECTORY resources urdf
   DESTINATION share/${PROJECT_NAME}
   REGEX "/ursim/" EXCLUDE
 )
@@ -188,7 +188,7 @@ install(PROGRAMS scripts/start_ursim.sh
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY config launch
+install(DIRECTORY config launch rviz
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -56,6 +56,7 @@ def launch_setup(context, *args, **kwargs):
     safety_k_position = LaunchConfiguration("safety_k_position")
     # General arguments
     description_package = LaunchConfiguration("description_package")
+    description_package_orig = LaunchConfiguration("description_package_orig")
     description_file = LaunchConfiguration("description_file")
     _publish_robot_description_semantic = LaunchConfiguration("publish_robot_description_semantic")
     moveit_config_package = LaunchConfiguration("moveit_config_package")
@@ -68,16 +69,16 @@ def launch_setup(context, *args, **kwargs):
     launch_servo = LaunchConfiguration("launch_servo")
 
     joint_limit_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
+        [FindPackageShare(description_package_orig), "config", ur_type, "joint_limits.yaml"]
     )
     kinematics_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
+        [FindPackageShare(description_package_orig), "config", ur_type, "default_kinematics.yaml"]
     )
     physical_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
+        [FindPackageShare(description_package_orig), "config", ur_type, "physical_parameters.yaml"]
     )
     visual_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
+        [FindPackageShare(description_package_orig), "config", ur_type, "visual_parameters.yaml"]
     )
 
     robot_description_content = Command(
@@ -85,6 +86,9 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
+            " ",
+            "ur_description_share:=",
+            PathJoinSubstitution([FindPackageShare(description_package_orig)]),
             " ",
             "robot_ip:=xxx.yyy.zzz.www",
             " ",
@@ -255,6 +259,7 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
+
     # Servo node for realtime control
     servo_yaml = load_yaml("ur_moveit_config", "config/ur_servo.yaml")
     servo_params = {"moveit_servo": servo_yaml}
@@ -271,6 +276,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     nodes_to_start = [move_group_node, rviz_node, servo_node]
+    # nodes_to_start = [rviz_node]
 
     return nodes_to_start
 
@@ -321,10 +327,34 @@ def generate_launch_description():
             description="k-position factor in the safety controller.",
         )
     )
+    # # General arguments
+    # declared_arguments.append(
+    #     DeclareLaunchArgument(
+    #         "description_package",
+    #         default_value="ur_description",
+    #         description="Description package with robot URDF/XACRO files. Usually the argument "
+    #         "is not set, it enables use of a custom description.",
+    #     )
+    # )
+    # declared_arguments.append(
+    #     DeclareLaunchArgument(
+    #         "description_file",
+    #         default_value="ur.urdf.xacro",
+    #         description="URDF/XACRO description file with the robot.",
+    #     )
+    # )
     # General arguments
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
+            default_value="ur_robot_driver",
+            description="Description package with robot URDF/XACRO files. Usually the argument "
+            "is not set, it enables use of a custom description.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "description_package_orig",
             default_value="ur_description",
             description="Description package with robot URDF/XACRO files. Usually the argument "
             "is not set, it enables use of a custom description.",
@@ -333,10 +363,11 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_file",
-            default_value="ur.urdf.xacro",
+            default_value="ur_with_custom.urdf.xacro",
             description="URDF/XACRO description file with the robot.",
         )
     )
+
     declared_arguments.append(
         DeclareLaunchArgument(
             "publish_robot_description_semantic",

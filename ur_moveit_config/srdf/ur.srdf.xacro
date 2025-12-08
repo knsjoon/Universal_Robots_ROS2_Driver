@@ -9,5 +9,9 @@
   <xacro:include filename="$(find ur_moveit_config)/srdf/ur_macro.srdf.xacro"/>
 
   <xacro:ur_srdf name="$(arg name)" prefix="$(arg prefix)"/>
-
+  <virtual_joint name="world_joint"
+                 type="floating"
+                 parent_frame="world"
+                 child_link="base_link_inertia"/>
+                 
 </robot>
