@@ -462,7 +462,13 @@ def launch_setup(context, *args, **kwargs):
             " ",
         ]
     )
-    robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
+    # robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
+    robot_description_semantic = {
+        "robot_description_semantic": ParameterValue(
+            value=robot_description_semantic_content,
+            value_type=str,
+        )
+    }
 
     publish_robot_description_semantic = {
         "publish_robot_description_semantic": _publish_robot_description_semantic
