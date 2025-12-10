@@ -10,4 +10,8 @@
 
   <xacro:ur_srdf name="$(arg name)" prefix="$(arg prefix)"/>
 
+  <virtual_joint name="world_joint"
+                type="fixed"
+                parent_frame="world"
+                child_link="ur_mount"/>
 </robot>
