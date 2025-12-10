@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ur_with_custom">
+
+  <!-- REQUIRED: xacro wants defaults -->
+  <xacro:arg name="ur_type" default="ur10e"/>
+  <xacro:arg name="name" default="$(arg ur_type)"/>
+  <xacro:arg name="robot_ip" default=""/>
+
+  <!-- NEW: share dir passed from launch -->
+  <xacro:arg name="ur_description_share" default=""/>
+
+  <!-- All parameter file paths derive from the passed share dir -->
+  <xacro:arg name="joint_limit_params"
+             default="$(arg ur_description_share)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_params"
+             default="$(arg ur_description_share)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_params"
+             default="$(arg ur_description_share)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_params"
+             default="$(arg ur_description_share)/config/$(arg ur_type)/visual_parameters.yaml"/>
+
+  <xacro:arg name="safety_limits"     default="true"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="tf_prefix"         default=""/>
+
+  <xacro:arg name="script_filename"        default=""/>
+  <xacro:arg name="input_recipe_filename"  default=""/>
+  <xacro:arg name="output_recipe_filename" default=""/>
+
+  <xacro:arg name="use_fake_hardware"    default="false"/>
+  <xacro:arg name="fake_sensor_commands" default="false"/>
+  <xacro:arg name="headless_mode"        default="false"/>
+
+  <xacro:arg name="use_tool_communication" default="false"/>
+  <xacro:arg name="tool_parity"            default="0"/>
+  <xacro:arg name="tool_baud_rate"         default="115200"/>
+  <xacro:arg name="tool_stop_bits"         default="1"/>
+  <xacro:arg name="tool_rx_idle_chars"     default="1.5"/>
+  <xacro:arg name="tool_tx_idle_chars"     default="3.5"/>
+  <xacro:arg name="tool_device_name"       default="/tmp/ttyUR"/>
+  <xacro:arg name="tool_tcp_port"          default="54321"/>
+  <xacro:arg name="tool_voltage"           default="0"/>
+
+  <xacro:arg name="reverse_ip"             default="0.0.0.0"/>
+  <xacro:arg name="script_command_port"    default="50004"/>
+  <xacro:arg name="reverse_port"           default="50001"/>
+  <xacro:arg name="script_sender_port"     default="50002"/>
+  <xacro:arg name="trajectory_port"        default="50003"/>
+
+  <xacro:arg name="with_caliboard"        default="false"/>
+
+  <!-- Include macro using the passed absolute path -->
+  <xacro:include filename="$(arg ur_description_share)/urdf/ur_macro.xacro"/>
+
+  <link name="world"/>
+
+  <xacro:ur_robot
+      name="$(arg name)"
+      tf_prefix="$(arg tf_prefix)"
+      parent="world"
+      joint_limits_parameters_file="$(arg joint_limit_params)"
+      kinematics_parameters_file="$(arg kinematics_params)"
+      physical_parameters_file="$(arg physical_params)"
+      visual_parameters_file="$(arg visual_params)"
+      safety_limits="$(arg safety_limits)"
+      safety_pos_margin="$(arg safety_pos_margin)"
+      safety_k_position="$(arg safety_k_position)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      headless_mode="$(arg headless_mode)"
+      use_tool_communication ="$(arg use_tool_communication)"
+      tool_parity ="$(arg tool_parity)"
+      tool_baud_rate ="$(arg tool_baud_rate)"
+      tool_stop_bits ="$(arg tool_stop_bits)"
+      tool_rx_idle_chars ="$(arg tool_rx_idle_chars)"
+      tool_tx_idle_chars ="$(arg tool_tx_idle_chars)"
+      tool_device_name ="$(arg tool_device_name)"
+      tool_tcp_port ="$(arg tool_tcp_port)"
+      tool_voltage ="$(arg tool_voltage)"
+      robot_ip ="$(arg robot_ip)"
+      script_filename ="$(arg script_filename)"
+      input_recipe_filename ="$(arg input_recipe_filename)"
+      output_recipe_filename ="$(arg output_recipe_filename)"
+      reverse_ip ="$(arg reverse_ip)"
+      script_command_port ="$(arg script_command_port)"
+      reverse_port ="$(arg reverse_port)"
+      script_sender_port ="$(arg script_sender_port)"
+      trajectory_port ="$(arg trajectory_port)">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:ur_robot>
+
+  <!-- ========================================================= -->
+  <!-- Adapter plate: two modes depending on with_caliboard flag -->
+  <!-- ========================================================= -->
+
+  <xacro:if value="$(arg with_caliboard)">
+    <!-- Full CaliBoard -->
+    <link name="adapter_plate">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://ur_robot_driver/urdf/CaliBoard.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.6 0.6 0.6 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://ur_robot_driver/urdf/CaliBoard.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="adapter_plate_mount" type="fixed">
+      <parent link="tool0"/>        
+      <child link="adapter_plate"/>  
+      <!-- <origin xyz="0 0 0" rpy="0 ${pi} ${-pi}"/> -->
+      <origin xyz="0 0 0" rpy="0 ${pi} ${-pi}"/>
+    </joint>
+  </xacro:if>
+
+  <xacro:unless value="$(arg with_caliboard)">
+    <!-- Only Adapter (no calibration board) -->
+    <link name="adapter_plate">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://ur_robot_driver/urdf/OnlyAdapter.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.6 0.6 0.6 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://ur_robot_driver/urdf/OnlyAdapter.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="adapter_plate_mount" type="fixed">
+      <parent link="tool0"/>        
+      <child link="adapter_plate"/>  
+      <origin xyz="0 0 0" rpy="0 ${pi} ${-pi}"/>
+    </joint>
+  </xacro:unless>
+
+  <!-- ========================================================= -->
+  <!-- Load gripper -->
+  <!-- ========================================================= -->
+  <xacro:include filename="$(find robotiq_arg85_description)/urdf/robotiq_arg85.urdf.xacro"/>
+  <xacro:robotiq_arg85/>
+  <joint name="gripper_mount_joint" type="fixed">
+    <parent link="adapter_plate"/>
+    <child link="robotiq_85_base_link"/>
+    <origin xyz="0 0 -0.003" rpy="0 ${pi} 0"/>
+  </joint>
+
+</robot>

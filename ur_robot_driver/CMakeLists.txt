@@ -168,7 +168,7 @@ ament_export_libraries(
   ur_robot_driver_plugin
 )
 
-install(DIRECTORY resources
+install(DIRECTORY resources urdf
   DESTINATION share/${PROJECT_NAME}
   REGEX "/ursim/" EXCLUDE
 )
