@@ -130,18 +130,32 @@ def launch_setup(context, *args, **kwargs):
     launch_servo = LaunchConfiguration("launch_servo")
 
 
+    # joint_limit_params = PathJoinSubstitution(
+    #     [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
+    # )
+    # physical_params = PathJoinSubstitution(
+    #     [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
+    # )
+    # kinematics_params = PathJoinSubstitution(
+    #     [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
+    # ) #added
+    # visual_params = PathJoinSubstitution(
+    #     [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
+    # )
+
     joint_limit_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
+        [FindPackageShare(current_package), "config2", ur_type, "joint_limits.yaml"]
     )
     physical_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
+        [FindPackageShare(current_package), "config2", ur_type, "physical_parameters.yaml"]
     )
     kinematics_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
+        [FindPackageShare(current_package), "config2", ur_type, "default_kinematics.yaml"]
     ) #added
     visual_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
+        [FindPackageShare(current_package), "config2", ur_type, "visual_parameters.yaml"]
     )
+
     script_filename = PathJoinSubstitution(
         [FindPackageShare("ur_client_library"), "resources", "external_control.urscript"]
     )
