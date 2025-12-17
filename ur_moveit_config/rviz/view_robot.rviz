@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /MotionPlanning1
         - /MotionPlanning1/Scene Robot1
-        - /RobotModel1
+        - /Axes1
         - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
@@ -486,7 +486,7 @@ Visualization Manager:
       Enabled: true
       Length: 1
       Name: Axes
-      Radius: 0.05000000074505806
+      Radius: 0.009999999776482582
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz_default_plugins/TF
@@ -530,8 +530,6 @@ Visualization Manager:
           Value: false
         tool0:
           Value: true
-        tool0_controller:
-          Value: false
         upper_arm_link:
           Value: false
         ur_mount:
@@ -554,8 +552,7 @@ Visualization Manager:
           ur_mount:
             base_link:
               base:
-                tool0_controller:
-                  {}
+                {}
               base_link_inertia:
                 shoulder_link:
                   upper_arm_link:
@@ -587,8 +584,7 @@ Visualization Manager:
       Enabled: true
       Name: MarkerArray
       Namespaces:
-        obstacles: true
-        targets: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -619,6 +615,18 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /target_axes
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /visualization_marker_array
       Value: true
   Enabled: true
   Global Options:
@@ -666,25 +674,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.2233163118362427
+      Distance: 1.2668507099151611
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.16437646746635437
-        Y: -0.08434074372053146
-        Z: 0.25588032603263855
+        X: 0.14819607138633728
+        Y: -0.08971232920885086
+        Z: 0.17322351038455963
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.42539817094802856
+      Pitch: 0.2853979766368866
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.180391311645508
+      Yaw: 4.845387935638428
     Saved: ~
 Window Geometry:
   Displays:

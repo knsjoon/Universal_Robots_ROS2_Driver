@@ -436,7 +436,13 @@ def launch_setup(context, *args, **kwargs):
         controllers_inactive.remove(initial_joint_controller.perform(context))
 
     if use_fake_hardware.perform(context) == "true":
-        controllers_active.remove("tcp_pose_broadcaster")
+        # tcp_pose_broadcaster doesn't work on fake hardware
+        if "tcp_pose_broadcaster" in controllers_active:
+            controllers_active.remove("tcp_pose_broadcaster")
+
+        # If you want to publish /joint_states yourself on fake hardware, disable the built-in one
+        if "joint_state_broadcaster" in controllers_active:
+            controllers_active.remove("joint_state_broadcaster")
 
     controller_spawners = [
         controller_spawner(controllers_active),
